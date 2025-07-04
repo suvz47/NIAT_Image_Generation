@@ -5,7 +5,7 @@ import base64
 from io import BytesIO
 from PIL import Image
 
-from src.llm.prompt_engineering import engineer_prompt
+from src.llm.prompt_engineering import engineer_generation_prompt, engineer_editing_prompt
 from src.image_gen.generate import generate_image
 from src.image_edit.edit import edit_image
 
@@ -33,7 +33,7 @@ async def generate(prompt: str = Form(...)):
     """
     Accepts a user prompt, engineers it, generates an image, and returns the image as base64.
     """
-    engineered = engineer_prompt(prompt)
+    engineered = engineer_generation_prompt(prompt)
     img = generate_image(engineered)
     img_b64 = pil_to_base64(img)
     return JSONResponse({"engineered_prompt": engineered, "image": img_b64})
@@ -47,7 +47,7 @@ async def edit(
     Accepts an uploaded image and edit instruction, engineers the instruction, edits the image, and returns the edited image as base64.
     """
     img = Image.open(image.file).convert("RGB")
-    engineered = engineer_prompt(instruction)
+    engineered = engineer_editing_prompt(instruction)
     edited = edit_image(img, engineered)
     img_b64 = pil_to_base64(edited)
     return JSONResponse({"engineered_edit": engineered, "image": img_b64})
@@ -61,7 +61,7 @@ async def edit_generated(
     Accepts a base64 image (from previous generation) and edit instruction, engineers the instruction, edits the image, and returns the edited image as base64.
     """
     img = base64_to_pil(image_b64)
-    engineered = engineer_prompt(instruction)
+    engineered = engineer_editing_prompt(instruction)
     edited = edit_image(img, engineered)
     img_b64 = pil_to_base64(edited)
     return JSONResponse({"engineered_edit": engineered, "image": img_b64})

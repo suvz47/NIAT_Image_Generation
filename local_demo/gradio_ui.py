@@ -1,11 +1,12 @@
 import gradio as gr
 from PIL import Image
+from src.llm.prompt_engineering import engineer_generation_prompt, engineer_editing_prompt
 
 # Placeholder functions for backend logic
 
 def engineer_prompt_llm(prompt):
-    # TODO: Connect to LLM for prompt engineering
-    return f"[Engineered] {prompt}"
+    # Use the new generation prompt engineering function
+    return engineer_generation_prompt(prompt)
 
 def generate_image(engineered_prompt):
     # TODO: Connect to image generation model
@@ -14,8 +15,8 @@ def generate_image(engineered_prompt):
     return img
 
 def engineer_edit_llm(image, edit_instruction):
-    # TODO: Connect to LLM for edit prompt engineering
-    return f"[Edit Engineered] {edit_instruction}"
+    # Use the new editing prompt engineering function
+    return engineer_editing_prompt(edit_instruction)
 
 def edit_image(image, engineered_edit_prompt):
     # TODO: Connect to image editing model
