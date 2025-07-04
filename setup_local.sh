@@ -4,8 +4,8 @@ set -e  # Exit immediately on error
 
 # Step 0: Setup virtual environment if not present
 if [ ! -d ".venv" ]; then
-    echo "Creating virtual environment with Python 3.13..."
-    python3.13 -m venv .venv
+    echo "Creating virtual environment with Python 3.12..."
+    python3.12 -m venv .venv
 else
     echo ".venv already exists. Skipping creation."
 fi
@@ -48,16 +48,6 @@ git lfs install
 echo "Logging in to Hugging Face with token..."
 huggingface-cli login --token "$HUGGINGFACE_TOKEN" --add-to-git-credential
 
-# Step 6: Clone model into models/image_generation/
-echo "Cloning FLUX.1-dev model into models/image_generation/..."
-mkdir -p models/image_generation
-cd models/image_generation
-
-if [ ! -d "FLUX.1-dev" ]; then
-    git clone git@huggingface.co:black-forest-labs/FLUX.1-dev.git
-else
-    echo "Model directory already exists. Skipping clone."
-fi
 
 cd ../../  # Return to project root
 echo "✅ Setup complete."

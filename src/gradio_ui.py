@@ -64,16 +64,13 @@ def build_ui():
             flex-direction: row;
             align-items: stretch;
             gap: 32px;
-            min-height: 600px;
-            height: 70vh;
+            width: 100%;
         }
         .sketch-col {
             flex: 1 1 0;
             display: flex;
             flex-direction: column;
             justify-content: stretch;
-            min-width: 320px;
-            height: 100%;
         }
         .sketch-box {
             border: 2.5px dashed #2176ae;
@@ -82,7 +79,6 @@ def build_ui():
             box-shadow: 2px 2px 0 0 #2176ae, 4px 4px 0 0 #38b6ff;
             padding: 8px 8px 8px 8px;
             margin-bottom: 10px;
-            min-height: 80px;
             flex: 0 0 auto;
         }
         .sketch-header {
@@ -121,6 +117,23 @@ def build_ui():
             min-height: 170px !important;
             font-size: 1.35em !important;
             padding: 8px 10px !important;
+        }
+        @media (max-width: 900px) {
+            .sketch-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .sketch-col {
+                min-width: 0;
+            }
+            .sketch-image {
+                min-height: 120px;
+                height: 120px;
+            }
+            .big-prompt-box textarea {
+                min-height: 100px !important;
+                font-size: 1.1em !important;
+            }
         }
         """
     ) as demo:
