@@ -3,6 +3,7 @@ gradio
 requests==2.32.4
 llama-cpp-python
 langchain
+langchain_core
 sentencepiece==0.2.0
 mflux==0.9.0
 uvicorn==0.30.0

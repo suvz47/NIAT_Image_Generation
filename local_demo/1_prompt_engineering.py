@@ -8,27 +8,37 @@ The user provides a simple prompt, and the LLM rewrites it to be more detailed a
 # 1. Import Required Packages
 import os
 import sys
+import configparser
 from llama_cpp import Llama
 from langchain_core.prompts import PromptTemplate
 
-# 2. Load the LLM Model (GGUF)
-# Set the directory where the GGUF model is stored
-model_dir = 'models/prompt_engineering'
+# 2. Load Configuration
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+# Get LLM configuration
+model_dir = config.get('LLM', 'model_dir_prompt')
+n_ctx = config.getint('LLM', 'n_ctx')
+n_batch = config.getint('LLM', 'n_batch')
+max_tokens = config.getint('LLM', 'max_tokens')
+temperature = config.getfloat('LLM', 'temperature')
+
+# 3. Load the LLM Model (GGUF)
 # Find the first split of the GGUF model
 model_files = [f for f in os.listdir(model_dir) if f.endswith('-00001-of-00002.gguf')]
-assert model_files, 'No first split GGUF model found in models/prompt_engineering/'
+assert model_files, f'No first split GGUF model found in {model_dir}/'
 model_path = os.path.join(model_dir, model_files[0])
 
 # Load the LLM using llama-cpp-python
 llm = Llama(
     model_path=model_path,
-    n_ctx=2048,      # Context window size
-    n_batch=128,     # Batch size for inference
-    verbose=False    # Suppress verbose output
+    n_ctx=n_ctx,      # Context window size
+    n_batch=n_batch,  # Batch size for inference
+    verbose=False     # Suppress verbose output
 )
 print(f'Loaded model: {model_path}')
 
-# 3. Define the Prompt Engineering Chain with explicit tags, example, and clear instructions
+# 4. Define the Prompt Engineering Chain with explicit tags, example, and clear instructions
 prompt_template = PromptTemplate.from_template(
     """
 You are an expert prompt engineer for AI image generation.
@@ -48,8 +58,13 @@ User prompt: {user_prompt}
 """
 )
 
-# 4. Create the Prompt Engineering Function (Stream, extract from tags)
-def engineer_prompt_stream(user_prompt, max_tokens=256, temperature=0.7):
+# 5. Create the Prompt Engineering Function (Stream, extract from tags)
+def engineer_prompt_stream(user_prompt, max_tokens=None, temperature=None):
+    # Use config values if not provided
+    if max_tokens is None:
+        max_tokens = config.getint('LLM', 'max_tokens')
+    if temperature is None:
+        temperature = config.getfloat('LLM', 'temperature')
     """
     Streams an improved image generation prompt using Qwen's chat format.
     The model is instructed to rewrite the user's prompt to be more detailed and creative.
