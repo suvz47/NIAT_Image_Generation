@@ -1,0 +1,9 @@
+fastapi==0.115.14
+gradio
+requests==2.32.4
+llama-cpp-python
+langchain
+sentencepiece==0.2.0
+mflux==0.9.0
+uvicorn==0.30.0
+pydantic==2.7.1
