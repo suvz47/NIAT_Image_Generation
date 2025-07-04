@@ -3,3 +3,6 @@
 models/image_generation
 models/prompt_engineering
 models/image_editing
+.DS_Store
+backups/
+niat_demo.egg-info/
