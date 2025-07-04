@@ -31,6 +31,7 @@ fi
 # Step 1: Install Python dependencies
 echo "Installing dependencies from requirements.txt..."
 pip install -r requirements.txt
+pip install llama-cpp-python langchain_core
 
 # Step 2: Upgrade mflux via uv
 echo "Upgrading mflux using uv..."
