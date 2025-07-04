@@ -144,11 +144,11 @@ def build_ui():
         # Edit image workflow
         def handle_edit(image, instruction):
             if image is None:
-                return "No image to edit!", None, None
+                return "No image to edit!", None
             eng_edit = engineer_edit_llm(image, instruction)
             edited = edit_image(image, eng_edit)
-            return eng_edit, edited, image
-        edit_btn.click(handle_edit, inputs=[state_image, edit_instruction], outputs=[engineered_edit, edit_image_out, orig_image])
+            return eng_edit, edited
+        edit_btn.click(handle_edit, inputs=[state_image, edit_instruction], outputs=[engineered_edit, edit_image_out])
 
     return demo
 
