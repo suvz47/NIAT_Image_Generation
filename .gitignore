@@ -1,0 +1,5 @@
+.env
+.venv
+models/image_generation
+models/prompt_engineering
+models/image_editing
