@@ -3,8 +3,13 @@ import requests
 from PIL import Image
 import io
 import base64
+import configparser
+import os
 
-API_URL = "http://localhost:8000"  # Change to your deployed FastAPI URL
+# Load API URL from config.ini
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(__file__), "../config.ini"))
+API_URL = config.get("API", "url") 
 
 def b64_to_image(b64str):
     return Image.open(io.BytesIO(base64.b64decode(b64str)))
@@ -154,7 +159,7 @@ def build_ui():
         # Generate image workflow
         gen_btn.click(generate_image_workflow, inputs=prompt, outputs=[engineered_prompt, orig_image, state_image])
 
-        # When user uploads an image, show it as original and set state
+        # When the user uploads an image, show it as original and set the state
         upload_btn.click(upload_image_workflow, inputs=upload, outputs=[orig_image, state_image])
 
         # Edit image workflow (for both uploaded and generated images)
@@ -163,4 +168,4 @@ def build_ui():
 
 if __name__ == "__main__":
     demo = build_ui()
-    demo.launch() 
+    demo.launch(server_port=8048, server_name="0.0.0.0", share=True) 
